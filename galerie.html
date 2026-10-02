@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galerie — GéoConsulting</title>
+<meta name="description" content="Photographies des équipements du laboratoire, des interventions de terrain et des ouvrages suivis par GéoConsulting au Niger.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   GéoConsulting — système visuel sombre
+   Surfaces profondes, halos colorés, verre dépoli, angles généreux.
+   ========================================================================== */
+
+:root {
+  --fond: #060E24;
+  --fond-2: #091433;
+  --surface: #0E1B3E;
+  --surface-2: #14264F;
+  --bord: rgba(255,255,255,.09);
+  --bord-fort: rgba(255,255,255,.18);
+
+  --texte: #EAF0FB;
+  --texte-doux: #9FB3D4;
+  --texte-faible: #708BB3;
+
+  --vert: #46B23A;
+  --vert-vif: #63D655;
+  --azur: #3D8BFF;
+  --cyan: #2FD4C4;
+
+  --r-s: 14px;
+  --r: 24px;
+  --r-l: 36px;
+
+  --ombre: 0 30px 70px -32px rgba(0,0,0,.85);
+  --ombre-l: 0 50px 110px -40px rgba(0,0,0,.95);
+
+  --max: 1260px;
+  --gouttiere: clamp(1.2rem, 5vw, 3.2rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 17.5px;
+  line-height: 1.7;
+  color: var(--texte-doux);
+  background: var(--fond);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 800;
+  line-height: 1.07;
+  letter-spacing: -0.036em;
+  color: var(--texte);
+  margin: 0 0 0.55em;
+}
+h1 { font-size: clamp(2.6rem, 6.2vw, 4.6rem); }
+h2 { font-size: clamp(2rem, 4.2vw, 3.05rem); }
+h3 { font-size: 1.16rem; font-weight: 700; letter-spacing: -0.018em; }
+
+p { margin: 0 0 1.15em; max-width: 68ch; }
+strong { color: var(--texte); }
+a { color: var(--vert-vif); text-underline-offset: 3px; }
+a:hover { color: var(--texte); }
+img { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--vert-vif); outline-offset: 3px; border-radius: 6px; }
+
+.conteneur { max-width: var(--max); margin-inline: auto; padding-inline: var(--gouttiere); }
+
+.section { padding-block: clamp(4rem, 9vw, 7.5rem); position: relative; }
+.section--brume { background: var(--fond-2); }
+.section--halo { overflow: hidden; }
+.section--halo::before {
+  content: ""; position: absolute; width: 70vw; height: 70vw; max-width: 1000px; max-height: 1000px;
+  right: -18vw; top: -30%;
+  background: radial-gradient(circle, rgba(70,178,58,.16) 0%, rgba(70,178,58,0) 66%);
+  pointer-events: none;
+}
+.section--halo::after {
+  content: ""; position: absolute; width: 60vw; height: 60vw; max-width: 850px; max-height: 850px;
+  left: -20vw; bottom: -34%;
+  background: radial-gradient(circle, rgba(61,139,255,.15) 0%, rgba(61,139,255,0) 66%);
+  pointer-events: none;
+}
+.section > * { position: relative; z-index: 1; }
+
+.chapeau { max-width: 60ch; margin-bottom: clamp(2.2rem, 4vw, 3.4rem); }
+.chapeau::before {
+  content: ""; display: block; width: 46px; height: 4px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--vert), var(--cyan));
+  margin-bottom: 1.5rem;
+}
+.chapeau p { color: var(--texte-doux); font-size: 1.1rem; }
+.entete-double { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-end; justify-content: space-between; }
+.entete-double .chapeau { margin-bottom: 0; }
+
+/* --- progression ---------------------------------------------------------- */
+.progression {
+  position: fixed; inset: 0 auto auto 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--vert), var(--cyan));
+  z-index: 100; transition: width .12s linear;
+}
+
+/* --- en-tête -------------------------------------------------------------- */
+.bandeau-haut { background: #030817; color: var(--texte-faible); font-size: 0.83rem; }
+.bandeau-haut .conteneur { display: flex; flex-wrap: wrap; gap: 0.3rem 1.8rem; justify-content: flex-end; padding-block: 0.55rem; }
+.bandeau-haut a { color: var(--texte-faible); text-decoration: none; }
+.bandeau-haut a:hover { color: var(--texte); }
+
+.entete {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(6,14,36,.72);
+  backdrop-filter: saturate(160%) blur(18px); -webkit-backdrop-filter: saturate(160%) blur(18px);
+  border-bottom: 1px solid transparent; transition: border-color .25s ease, background .25s ease;
+}
+.entete.flotte { border-bottom-color: var(--bord); background: rgba(6,14,36,.94); }
+.entete .conteneur { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.8rem; }
+.marque { display: inline-flex; align-items: center; padding: .42rem .8rem; border-radius: 12px;
+  background: rgba(255,255,255,.94); box-shadow: 0 10px 26px -16px rgba(0,0,0,.9); }
+.marque img { width: 138px; }
+.entete-droite { display: flex; align-items: center; gap: .7rem; }
+
+.nav { display: flex; align-items: center; gap: 0.1rem; }
+.nav a {
+  display: block; padding: 0.5rem 0.62rem; font-size: 0.87rem; font-weight: 600; white-space: nowrap;
+  color: var(--texte-doux); text-decoration: none; border-radius: 999px;
+  transition: background .2s ease, color .2s ease;
+}
+.nav a:hover { background: rgba(255,255,255,.07); color: var(--texte); }
+.nav a[aria-current="page"] { background: rgba(70,178,58,.18); color: var(--vert-vif); }
+
+.burger {
+  display: none; background: rgba(255,255,255,.08); border: 1px solid var(--bord);
+  padding: 0.55rem 1rem; font: inherit; font-weight: 700; font-size: .88rem;
+  color: var(--texte); cursor: pointer; border-radius: 999px;
+}
+@media (max-width: 1400px) { .entete-droite > .bouton { display: none; } }
+@media (max-width: 1150px) {
+  .burger { display: block; }
+  .nav {
+    display: none; position: absolute; inset: 100% 0 auto 0; flex-direction: column; align-items: stretch;
+    background: var(--surface); padding: 0.7rem var(--gouttiere) 1.4rem; box-shadow: var(--ombre);
+    border-radius: 0 0 var(--r) var(--r); border: 1px solid var(--bord); border-top: 0;
+  }
+  .nav.ouvert { display: flex; }
+  .nav a { padding: 0.8rem 1rem; }
+}
+
+
+/* --- boutons -------------------------------------------------------------- */
+.bouton {
+  display: inline-flex; align-items: center; gap: .55rem; padding: 0.85rem 1.7rem;
+  font-weight: 700; font-size: 0.93rem; border: 1px solid transparent; border-radius: 999px;
+  text-decoration: none; cursor: pointer; background: transparent; color: var(--texte);
+  font-family: inherit;
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease, border-color .2s ease;
+}
+.bouton::after { content: "\2192"; transition: transform .22s ease; }
+.bouton--sans-fleche::after { content: none; }
+.bouton:hover::after { transform: translateX(3px); }
+.bouton--vert { background: linear-gradient(120deg, var(--vert), var(--vert-vif)); color: #04130A; box-shadow: 0 18px 38px -16px rgba(70,178,58,.8); }
+.bouton--vert:hover { transform: translateY(-2px); box-shadow: 0 24px 46px -14px rgba(70,178,58,.95); color: #04130A; }
+.bouton--verre { background: rgba(255,255,255,.07); border-color: var(--bord-fort); color: var(--texte); backdrop-filter: blur(10px); }
+.bouton--verre:hover { background: rgba(255,255,255,.14); transform: translateY(-2px); color: var(--texte); }
+.bouton--contour { border-color: var(--bord-fort); color: var(--texte); }
+.bouton--contour:hover { border-color: var(--vert-vif); color: var(--vert-vif); transform: translateY(-2px); }
+.bouton--compact { padding: .55rem 1.15rem; font-size: .85rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.2rem; }
+
+/* --- héros ---------------------------------------------------------------- */
+.heros {
+  position: relative; overflow: hidden; min-height: min(92vh, 900px);
+  display: flex; align-items: center; border-radius: 0 0 var(--r-l) var(--r-l);
+  background: var(--fond);
+}
+.heros-fond { position: absolute; inset: 0; }
+.heros-fond img { width: 100%; height: 100%; object-fit: cover; opacity: .34; animation: respiration 28s ease-out forwards; }
+@keyframes respiration { from { transform: scale(1.18); } to { transform: scale(1); } }
+.heros-fond::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(64% 58% at 84% 14%, rgba(70,178,58,.34) 0%, rgba(70,178,58,0) 62%),
+    radial-gradient(60% 66% at 6% 88%, rgba(61,139,255,.34) 0%, rgba(61,139,255,0) 62%),
+    linear-gradient(100deg, rgba(6,14,36,.96) 0%, rgba(6,14,36,.82) 46%, rgba(6,14,36,.5) 100%);
+}
+.heros .conteneur { position: relative; z-index: 1; padding-block: clamp(4.5rem, 11vw, 8rem); }
+.heros h1 { max-width: 19ch; font-size: clamp(2.35rem, 5.4vw, 4.05rem); }
+.heros h1 em { font-style: normal; background: linear-gradient(100deg, var(--vert-vif), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.heros p { color: #C2D3EE; font-size: clamp(1.08rem, 2vw, 1.28rem); max-width: 54ch; }
+.heros-iso { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 3rem; }
+.heros-iso img { height: 88px; width: auto; border-radius: var(--r-s); box-shadow: 0 22px 46px -18px rgba(0,0,0,.95); }
+
+.page-titre { position: relative; overflow: hidden; background: var(--fond-2); border-radius: 0 0 var(--r-l) var(--r-l); }
+.page-titre::before {
+  content: ""; position: absolute; width: 720px; height: 720px; right: -200px; top: -380px;
+  background: radial-gradient(circle, rgba(70,178,58,.2) 0%, rgba(70,178,58,0) 66%);
+}
+.page-titre .conteneur { position: relative; padding-block: clamp(3.4rem, 7vw, 5.6rem); }
+.page-titre p { color: var(--texte-doux); font-size: 1.1rem; }
+
+/* --- chiffres ------------------------------------------------------------- */
+.chiffres { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; }
+.chiffres div {
+  background: linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  border: 1px solid var(--bord); border-radius: var(--r); padding: 1.7rem 1.6rem;
+}
+.chiffres b {
+  display: block; font-weight: 800; font-size: clamp(2.2rem, 4.4vw, 3rem); line-height: 1; letter-spacing: -0.045em;
+  background: linear-gradient(120deg, #fff 25%, var(--vert-vif));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.chiffres span { display: block; margin-top: 0.6rem; font-size: 0.9rem; color: var(--texte-faible); }
+
+/* --- métiers -------------------------------------------------------------- */
+.bento { display: grid; gap: 1rem; grid-template-columns: repeat(4, 1fr); }
+.bento .metier:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.bento .metier:nth-child(2) { grid-column: span 2; }
+@media (max-width: 880px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .bento .metier:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+  .bento .metier:nth-child(2) { grid-column: span 2; }
+}
+.metier {
+  position: relative; display: block; overflow: hidden; text-decoration: none;
+  background: var(--surface); border-radius: var(--r); min-height: 250px; border: 1px solid var(--bord);
+}
+.metier figure { margin: 0; height: 100%; }
+.metier img { width: 100%; height: 100%; object-fit: cover; opacity: .72; transition: transform .9s cubic-bezier(.2,.7,.3,1), opacity .4s ease; }
+.metier figcaption {
+  position: absolute; inset: auto 0 0 0; padding: 1.8rem 1.7rem;
+  background: linear-gradient(to top, rgba(6,14,36,.98) 16%, rgba(6,14,36,.6) 58%, rgba(6,14,36,0) 100%);
+}
+.metier h3 { margin: 0 0 0.3rem; font-size: 1.2rem; }
+.metier figcaption p { margin: 0; font-size: 0.9rem; color: var(--texte-doux); max-width: none; }
+.metier:hover img, .metier:focus-visible img { transform: scale(1.07); opacity: .5; }
+.metier::after { content: ""; position: absolute; inset: 0; border-radius: var(--r); border: 1px solid transparent; pointer-events: none; transition: border-color .3s ease; }
+.metier:hover::after { border-color: rgba(99,214,85,.7); }
+
+/* --- prestations ---------------------------------------------------------- */
+.prestations { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.prestation {
+  background: linear-gradient(160deg, rgba(255,255,255,.065), rgba(255,255,255,.02));
+  border: 1px solid var(--bord); border-radius: var(--r); padding: 1.9rem;
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), border-color .25s ease;
+}
+.prestation:hover { transform: translateY(-5px); border-color: rgba(99,214,85,.45); }
+.prestation .pastille {
+  width: 56px; height: 56px; border-radius: 17px; margin-bottom: 1.3rem; display: grid; place-items: center;
+  background: linear-gradient(140deg, rgba(70,178,58,.28), rgba(47,212,196,.16));
+  border: 1px solid rgba(99,214,85,.3);
+}
+.prestation svg { width: 28px; height: 28px; stroke: var(--vert-vif); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.prestation h3 { margin: 0 0 0.45rem; }
+.prestation p { margin: 0; font-size: 0.94rem; color: var(--texte-doux); }
+
+/* --- blocs ---------------------------------------------------------------- */
+.colonnes { display: grid; gap: clamp(1.1rem, 3vw, 1.8rem); }
+.colonnes--2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.colonnes--3 { grid-template-columns: repeat(auto-fit, minmax(255px, 1fr)); }
+.bloc {
+  background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid var(--bord); border-radius: var(--r); padding: 1.8rem;
+}
+.bloc h3 { margin-bottom: 0.6rem; }
+.bloc p { font-size: 0.96rem; color: var(--texte-doux); }
+.bloc--vert { border-top: 2px solid var(--vert); }
+.liste { padding-left: 1.15rem; margin: 0; color: var(--texte-doux); font-size: 0.95rem; }
+.liste li { margin-bottom: 0.4rem; }
+.liste li::marker { color: var(--vert); }
+.liste-nue { list-style: none; margin: 0; padding: 0; }
+
+/* --- image + texte -------------------------------------------------------- */
+.duo { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+@media (min-width: 900px) {
+  .duo { grid-template-columns: 1fr 0.85fr; }
+  .duo--inverse { grid-template-columns: 0.85fr 1fr; }
+  .duo--inverse .duo-image { order: -1; }
+}
+.duo-image { margin: 0; }
+.duo-image img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r); box-shadow: var(--ombre); border: 1px solid var(--bord); }
+.duo-image figcaption { font-size: 0.85rem; color: var(--texte-faible); padding-top: 0.9rem; }
+
+/* --- mot du directeur ----------------------------------------------------- */
+.mot-dg {
+  position: relative; border-radius: var(--r-l); overflow: hidden;
+  background: linear-gradient(140deg, var(--surface) 0%, var(--fond-2) 58%, var(--surface-2) 100%);
+  border: 1px solid var(--bord);
+  padding: clamp(2rem, 4.5vw, 3.8rem);
+}
+.mot-dg::before {
+  content: ""; position: absolute; width: 640px; height: 640px; right: -190px; top: -280px;
+  background: radial-gradient(circle, rgba(47,212,196,.2) 0%, rgba(47,212,196,0) 66%);
+}
+.mot-dg-grille { position: relative; display: grid; gap: clamp(1.8rem, 4vw, 3.4rem); align-items: stretch; }
+@media (min-width: 900px) { .mot-dg-grille { grid-template-columns: 0.52fr 1fr; } }
+
+.mot-dg-aside { position: relative; }
+.mot-dg-label {
+  margin: 0 0 1.4rem; font-size: .82rem; font-weight: 700;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--vert-vif);
+}
+.mot-dg-aside::after {
+  content: ""; display: block; width: 46px; height: 4px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--vert), var(--cyan)); margin-top: 1.6rem;
+}
+@media (min-width: 900px) {
+  .mot-dg-aside { border-right: 1px solid var(--bord); padding-right: clamp(1.5rem, 3vw, 2.6rem); }
+  .mot-dg-aside::after { display: none; }
+}
+
+.mot-dg-texte { position: relative; }
+.mot-dg-texte .guillemet {
+  display: block; font-size: 4.4rem; line-height: .55; color: var(--vert);
+  opacity: .42; margin-bottom: 1rem;
+}
+.mot-dg-texte blockquote { margin: 0; }
+.mot-dg-texte blockquote p {
+  font-size: clamp(1.08rem, 1.9vw, 1.36rem); line-height: 1.6; color: var(--texte);
+  font-weight: 600; letter-spacing: -.016em; max-width: 62ch;
+}
+.mot-dg-texte blockquote p:last-child { margin-bottom: 0; }
+
+.signature { display: flex; align-items: center; gap: 1rem; }
+.signature .initiales {
+  width: 54px; height: 54px; flex: 0 0 auto; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(140deg, var(--vert), var(--cyan)); color: #04130A; font-weight: 800; font-size: 1rem;
+}
+.signature b { display: block; color: var(--texte); font-size: 1.02rem; }
+.signature span { font-size: .87rem; color: var(--texte-faible); }
+
+/* --- actualités ----------------------------------------------------------- */
+.actus { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.actu {
+  display: flex; flex-direction: column; overflow: hidden; text-decoration: none;
+  background: linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border: 1px solid var(--bord); border-radius: var(--r); color: inherit;
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), border-color .25s ease;
+}
+.actu:hover { transform: translateY(-5px); border-color: rgba(99,214,85,.45); color: inherit; }
+.actu-image { aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface-2); }
+.actu-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s cubic-bezier(.2,.7,.3,1); }
+.actu:hover .actu-image img { transform: scale(1.06); }
+.actu-corps { padding: 1.5rem 1.6rem 1.8rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+.actu-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; font-size: .77rem; }
+.actu-cat {
+  font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--vert-vif);
+  background: rgba(70,178,58,.14); padding: .22rem .7rem; border-radius: 999px;
+}
+.actu-date { color: var(--texte-faible); }
+.actu h3 { margin: 0; font-size: 1.08rem; line-height: 1.34; }
+.actu p { margin: 0; font-size: .92rem; color: var(--texte-doux); }
+.actu .lien { margin-top: auto; padding-top: .9rem; font-weight: 700; font-size: .87rem; color: var(--vert-vif); }
+
+/* --- galerie -------------------------------------------------------------- */
+.galerie-grille { display: grid; grid-template-columns: repeat(12, 1fr); grid-auto-rows: 188px; grid-auto-flow: dense; gap: .9rem; }
+.galerie-grille figure {
+  margin: 0; overflow: hidden; border-radius: var(--r-s); position: relative; height: 100%;
+  border: 1px solid var(--bord); cursor: zoom-in;
+}
+.galerie-grille img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.3,1), opacity .3s ease; }
+.galerie-grille figure:hover img { transform: scale(1.08); opacity: .62; }
+.galerie-grille figcaption {
+  position: absolute; inset: auto 0 0 0; padding: 1.1rem 1.2rem; font-size: .86rem; color: var(--texte);
+  background: linear-gradient(to top, rgba(6,14,36,.96), rgba(6,14,36,0));
+  opacity: 0; transform: translateY(10px); transition: opacity .3s ease, transform .3s ease;
+}
+.galerie-grille figure:hover figcaption { opacity: 1; transform: none; }
+.g-l { grid-column: span 6; grid-row: span 2; }
+.g-m { grid-column: span 6; }
+.g-s { grid-column: span 3; }
+@media (max-width: 1080px) {
+  .galerie-grille { grid-template-columns: repeat(6, 1fr); }
+  .g-l { grid-column: span 6; grid-row: span 2; }
+  .g-m { grid-column: span 6; }
+  .g-s { grid-column: span 3; }
+}
+@media (max-width: 620px) {
+  .galerie-grille { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+  .g-l, .g-m { grid-column: span 2; grid-row: span 1; }
+  .g-s { grid-column: span 1; }
+}
+
+.visionneuse {
+  position: fixed; inset: 0; z-index: 200; display: none; place-items: center;
+  background: rgba(3,8,23,.94); backdrop-filter: blur(16px); padding: 5vh 5vw;
+}
+.visionneuse.ouverte { display: grid; }
+.visionneuse figure { margin: 0; text-align: center; }
+.visionneuse img { max-width: 100%; max-height: 82vh; border-radius: var(--r-s); box-shadow: var(--ombre-l); margin-inline: auto; }
+.visionneuse figcaption { color: var(--texte-doux); margin-top: 1.1rem; font-size: .92rem; }
+.visionneuse button {
+  position: absolute; top: 2.5vh; right: 3vw; background: rgba(255,255,255,.1);
+  border: 1px solid var(--bord-fort); color: var(--texte); border-radius: 999px;
+  width: 46px; height: 46px; font-size: 1.4rem; cursor: pointer; line-height: 1;
+}
+
+/* --- mosaïque ------------------------------------------------------------- */
+.mosaique { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 172px; gap: 0.85rem; }
+.mosaique figure { margin: 0; height: 100%; overflow: hidden; border-radius: var(--r-s); border: 1px solid var(--bord); }
+.mosaique img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.3,1); }
+.mosaique figure:hover img { transform: scale(1.06); }
+.m-large { grid-column: span 3; grid-row: span 2; }
+.m-moyen { grid-column: span 3; }
+.m-petit { grid-column: span 2; }
+@media (max-width: 880px) {
+  .mosaique { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 145px; }
+  .m-large, .m-moyen { grid-column: span 2; grid-row: span 1; }
+  .m-petit { grid-column: span 1; }
+}
+
+/* --- certificats ---------------------------------------------------------- */
+.certificats { display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+.certificat {
+  background: var(--surface); border: 1px solid var(--bord); border-radius: var(--r); overflow: hidden;
+  text-decoration: none; color: inherit; display: block;
+  transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease;
+}
+.certificat:hover { transform: translateY(-7px); border-color: rgba(99,214,85,.5); color: inherit; }
+.certificat .vue { position: relative; overflow: hidden; display: block; background: #fff; }
+.certificat .vue img { width: 100%; aspect-ratio: 3 / 3.4; object-fit: cover; object-position: top center; }
+.certificat .badge { position: absolute; right: 14px; bottom: -26px; height: 78px; width: auto; aspect-ratio: auto; object-fit: contain; border-radius: 12px; background: #fff; box-shadow: var(--ombre); }
+.certificat-texte { padding: 2.4rem 1.7rem 1.9rem; display: block; }
+.certificat-texte b { display: block; font-size: 1.35rem; font-weight: 800; letter-spacing: -.03em; color: var(--texte); }
+.certificat-texte > span { display: block; font-size: 0.9rem; font-weight: 700; color: var(--vert-vif); margin-top: .2rem; }
+.certificat-texte p { font-size: 0.92rem; color: var(--texte-doux); margin: 0.9rem 0 0; }
+
+/* --- tableau -------------------------------------------------------------- */
+.defilant { overflow-x: auto; border-radius: var(--r); border: 1px solid var(--bord); background: rgba(255,255,255,.03); }
+.tableau { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.tableau th, .tableau td { text-align: left; padding: 1rem 1.3rem; border-bottom: 1px solid var(--bord); vertical-align: top; }
+.tableau tr:last-child td { border-bottom: 0; }
+.tableau th { font-size: 0.78rem; font-weight: 700; color: var(--texte-faible); text-transform: uppercase; letter-spacing: .07em; }
+.tableau td { color: var(--texte-doux); }
+.tableau td:nth-child(2) { color: var(--texte); }
+.tableau tbody tr { transition: background .2s ease; }
+.tableau tbody tr:hover { background: rgba(255,255,255,.04); }
+
+/* --- références ----------------------------------------------------------- */
+.filtres { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.4rem; }
+.filtre {
+  border: 1px solid var(--bord); background: rgba(255,255,255,.04); color: var(--texte-doux);
+  padding: 0.5rem 1.15rem; font: inherit; font-size: 0.89rem; font-weight: 600;
+  border-radius: 999px; cursor: pointer; transition: all .2s ease;
+}
+.filtre:hover { border-color: rgba(99,214,85,.5); color: var(--vert-vif); }
+.filtre[aria-pressed="true"] { background: linear-gradient(120deg, var(--vert), var(--vert-vif)); border-color: transparent; color: #04130A; }
+
+.references { display: grid; gap: 0.9rem; }
+.ref {
+  display: grid; gap: 0.7rem 2.5rem; padding: 1.8rem;
+  background: linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  border: 1px solid var(--bord); border-radius: var(--r);
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), border-color .25s ease;
+}
+.ref:hover { transform: translateY(-3px); border-color: rgba(99,214,85,.4); }
+@media (min-width: 820px) { .ref { grid-template-columns: 1.35fr 1fr; } }
+.ref h3 { margin: 0 0 0.45rem; font-size: 1.12rem; line-height: 1.32; }
+.ref .secteur {
+  display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--vert-vif); background: rgba(70,178,58,.14); padding: .25rem .75rem; border-radius: 999px; margin-bottom: .7rem;
+}
+.ref p { margin: 0; font-size: 0.93rem; color: var(--texte-doux); }
+.ref dl { display: grid; grid-template-columns: auto 1fr; gap: 0.2rem 1rem; margin: 0; font-size: 0.88rem; }
+.ref dt { color: var(--texte-faible); }
+.ref dd { margin: 0; color: var(--texte); }
+.cache { display: none !important; }
+.compteur { font-size: 0.87rem; color: var(--texte-faible); margin: 0 0 1.2rem; }
+
+/* --- ruban de logos, en couleur ------------------------------------------- */
+.ruban { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.ruban-piste { display: flex; gap: 1rem; width: max-content; animation: defile 48s linear infinite; }
+.ruban:hover .ruban-piste { animation-play-state: paused; }
+@keyframes defile { to { transform: translateX(-50%); } }
+.ruban figure {
+  margin: 0; width: 198px; height: 126px; flex: 0 0 auto; background: #fff;
+  border-radius: var(--r-s); display: grid; place-items: center; padding: 1.15rem;
+  box-shadow: 0 18px 40px -26px rgba(0,0,0,.9);
+  transition: transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.ruban figure:hover { transform: translateY(-6px); }
+.ruban img { max-height: 68px; max-width: 100%; width: auto; object-fit: contain; }
+.ruban figcaption { font-size: .8rem; font-weight: 700; color: #0E2F6E; text-align: center; }
+
+/* --- formulaires ---------------------------------------------------------- */
+.formulaire {
+  background: linear-gradient(160deg, rgba(255,255,255,.065), rgba(255,255,255,.02));
+  border: 1px solid var(--bord); border-radius: var(--r-l); padding: clamp(1.5rem, 3.5vw, 3rem);
+}
+.etape { margin-bottom: 2.6rem; }
+.etape:last-of-type { margin-bottom: 1.8rem; }
+.etape-titre { display: flex; align-items: center; gap: .9rem; margin-bottom: 1.4rem; }
+.etape-num {
+  width: 34px; height: 34px; flex: 0 0 auto; border-radius: 50%; display: grid; place-items: center;
+  font-size: .85rem; font-weight: 800; color: var(--vert-vif);
+  background: rgba(70,178,58,.14); border: 1px solid rgba(99,214,85,.35);
+}
+.etape-titre h3 { margin: 0; }
+.grille-champs { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.champ { display: grid; gap: 0.4rem; }
+.champ--large { grid-column: 1 / -1; }
+.champ label { font-size: 0.87rem; font-weight: 700; color: var(--texte); }
+.champ .aide { font-size: .8rem; color: var(--texte-faible); font-weight: 400; }
+.champ input, .champ select, .champ textarea {
+  font: inherit; font-size: 0.96rem; padding: 0.8rem 1rem;
+  border: 1px solid var(--bord); border-radius: var(--r-s);
+  background: rgba(255,255,255,.05); color: var(--texte); width: 100%;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.champ input::placeholder, .champ textarea::placeholder { color: var(--texte-faible); }
+.champ select option { background: var(--surface); color: var(--texte); }
+.champ textarea { min-height: 140px; resize: vertical; }
+.champ input:focus, .champ textarea:focus, .champ select:focus {
+  border-color: var(--vert); background: rgba(255,255,255,.08); box-shadow: 0 0 0 4px rgba(70,178,58,.14); outline: none;
+}
+
+.choix { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); }
+.choix label {
+  display: block; position: relative; padding: 1rem 1.15rem; border: 1px solid var(--bord); border-radius: var(--r-s);
+  background: rgba(255,255,255,.035); cursor: pointer; font-size: .93rem; font-weight: 600; color: var(--texte-doux);
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.choix label:hover { border-color: rgba(99,214,85,.5); color: var(--texte); }
+.choix input { position: absolute; opacity: 0; width: 0; height: 0; }
+.choix label.actif { border-color: var(--vert); background: rgba(70,178,58,.12); color: var(--texte); }
+.choix small { display: block; font-weight: 400; font-size: .81rem; color: var(--texte-faible); margin-top: .18rem; }
+
+.retour { font-size: .92rem; color: var(--vert-vif); margin: 1.1rem 0 0; }
+.avis { border-radius: var(--r-s); background: rgba(224,179,74,.1); border: 1px solid rgba(224,179,74,.35); padding: 1rem 1.3rem; font-size: 0.92rem; color: #E8C878; }
+.avis--rouge { background: rgba(199,72,72,.12); border-color: rgba(199,72,72,.4); color: #F0A0A0; }
+
+/* --- WhatsApp ------------------------------------------------------------- */
+.whatsapp {
+  position: fixed; right: clamp(1rem, 3vw, 2rem); bottom: clamp(1rem, 3vw, 2rem); z-index: 90;
+  display: inline-flex; align-items: center; gap: .65rem;
+  background: #25D366; color: #04240F; font-weight: 700; font-size: .92rem;
+  padding: .85rem 1.3rem; border-radius: 999px; text-decoration: none;
+  box-shadow: 0 20px 44px -16px rgba(37,211,102,.85);
+  transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s ease;
+}
+.whatsapp:hover { transform: translateY(-3px) scale(1.02); color: #04240F; box-shadow: 0 26px 52px -14px rgba(37,211,102,.95); }
+.whatsapp svg { width: 22px; height: 22px; fill: currentColor; flex: 0 0 auto; }
+.whatsapp .libelle { display: none; }
+@media (min-width: 760px) { .whatsapp .libelle { display: inline; } }
+
+.wa-bloc { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem; }
+.wa-bloc .rond {
+  width: 58px; height: 58px; flex: 0 0 auto; border-radius: 50%; display: grid; place-items: center;
+  background: #25D366; color: #04240F;
+}
+.wa-bloc .rond svg { width: 30px; height: 30px; fill: currentColor; }
+
+/* --- pied de page --------------------------------------------------------- */
+.pied { background: #030817; padding-block: 4rem 1.8rem; font-size: 0.93rem; position: relative; overflow: hidden; }
+.pied::before {
+  content: ""; position: absolute; width: 760px; height: 760px; left: -220px; bottom: -460px;
+  background: radial-gradient(circle, rgba(61,139,255,.2) 0%, rgba(61,139,255,0) 66%);
+}
+.pied .conteneur { position: relative; }
+.pied h4 { font-size: 0.95rem; margin-bottom: 1rem; }
+.pied a { color: var(--texte-doux); text-decoration: none; }
+.pied a:hover { color: var(--texte); }
+.pied li { margin-bottom: 0.45rem; }
+.pied p { color: var(--texte-doux); }
+.pied .colonnes { gap: 2.4rem; }
+.pied-bas {
+  margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--bord);
+  display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; justify-content: space-between;
+  font-size: 0.83rem; color: var(--texte-faible);
+}
+
+/* --- administration ------------------------------------------------------- */
+.admin-corps { background: var(--fond); min-height: 100vh; }
+.admin-connexion { max-width: 430px; margin: 8vh auto; background: var(--surface); border: 1px solid var(--bord); border-radius: var(--r); padding: 2.4rem; box-shadow: var(--ombre); }
+.admin-entete { background: #030817; border-bottom: 1px solid var(--bord); padding: 1rem 0; }
+.admin-entete .conteneur { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; color: var(--texte); }
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.admin-stats div { background: rgba(255,255,255,.05); border: 1px solid var(--bord); border-radius: var(--r-s); padding: 1.2rem 1.4rem; }
+.admin-stats b { display: block; font-weight: 800; font-size: 1.9rem; color: var(--texte); letter-spacing: -.03em; }
+.admin-stats span { font-size: 0.85rem; color: var(--texte-faible); }
+.panneau { background: rgba(255,255,255,.04); border: 1px solid var(--bord); border-radius: var(--r); padding: 2rem; margin-bottom: 2rem; }
+
+/* --- apparition ----------------------------------------------------------- */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .85s cubic-bezier(.2,.7,.3,1), transform .85s cubic-bezier(.2,.7,.3,1); }
+.reveal.vu { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .heros-fond img, .ruban-piste { animation: none; }
+  * { transition: none !important; }
+}
+
+/* colonne de formulaire plus large que la colonne d'appui */
+@media (min-width: 1000px) { .duo--large { grid-template-columns: 1.62fr 1fr; } }
+
+</style>
+</head>
+<body data-page="galerie" data-base="">
+
+<div id="entete"></div>
+
+<section class="page-titre">
+  <div class="conteneur">
+    <h1>Galerie</h1>
+    <p>Nos équipements de laboratoire, nos interventions de terrain et les ouvrages dont nous assurons le suivi. Cliquez sur une image pour l'agrandir.</p>
+  </div>
+</section>
+
+<section class="section section--halo">
+  <div class="conteneur">
+    <div class="galerie-grille" id="galerie"></div>
+  </div>
+</section>
+
+<section class="section section--brume">
+  <div class="conteneur">
+    <div class="colonnes colonnes--2">
+      <div class="bloc bloc--vert">
+        <h3>Droit à l'image</h3>
+        <p>Aucune personne identifiable ne figure dans cette galerie. Les photographies de chantier sont publiées avec l'accord des maîtres d'ouvrage concernés.</p>
+      </div>
+      <div class="bloc bloc--vert">
+        <h3>Une mission à nous confier ?</h3>
+        <p>Décrivez votre projet, nous revenons vers vous sous deux jours ouvrés avec une proposition.</p>
+        <p style="margin-bottom:0"><a class="bouton bouton--vert bouton--compact" href="devis.html">Demander un devis</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pied"></div>
+
+<script>
+const SECTEURS = [
+  { slug: "routes", nom: "Routes et pistes" },
+  { slug: "hydraulique", nom: "Hydraulique et AEP" },
+  { slug: "batiment", nom: "Bâtiment et équipements" },
+  { slug: "geotechnique", nom: "Géotechnique et environnement" }
+];
+
+const REFERENCES = [
+  {
+    titre: "Supervision et contrôle des travaux de la route de contournement du barrage de Kandadji",
+    secteur: "routes",
+    client: "Ministère de l'Équipement / DGGT",
+    bailleur: "Banque islamique de développement",
+    lieu: "Région de Tillabéri, Niger",
+    periode: "2020 – en cours",
+    prestations: "40,2 km de route bitumée et deux ponts — supervision, contrôle géotechnique et contrôle des travaux.",
+    phare: true
+  },
+  {
+    titre: "Contrôle et surveillance des travaux d'entretien routier — lot 6",
+    secteur: "routes",
+    client: "AMODER",
+    bailleur: "Fonds d'entretien routier",
+    lieu: "Niamey et Tillabéri, Niger",
+    periode: "2024 – 2025",
+    prestations: "RN1W, RN4, RN6, RN24, RN25, RN27, RN31 et voiries urbaines de Niamey. Mission reconduite cinq années consécutives.",
+    phare: true
+  },
+  {
+    titre: "Études APS, APD, DAO et EIES — 551 km de routes rurales, lot 3",
+    secteur: "routes",
+    client: "Ministère de l'Équipement",
+    bailleur: "Budget national",
+    lieu: "Niamey, Dosso et Maradi, Niger",
+    periode: "2021 – 2023",
+    prestations: "Choix du tracé, topographie, assainissement, géotechnique, dimensionnement de chaussée et étude d'impact environnemental."
+  },
+  {
+    titre: "Études techniques, EIES et DAO — 160 km de pistes rurales",
+    secteur: "routes",
+    client: "ProDAF Maradi",
+    bailleur: "FIDA",
+    lieu: "Tahoua, Maradi et Zinder, Niger",
+    periode: "2017",
+    prestations: "Géotechnique, topographie, choix du tracé, recherche de carrières de latérite, EIES et dossier d'appel d'offres."
+  },
+  {
+    titre: "Études techniques détaillées — 140 km de pistes communautaires",
+    secteur: "routes",
+    client: "Programme national de développement local",
+    bailleur: "Fonds africain de développement (BAD)",
+    lieu: "Louga et Diourbel, Sénégal",
+    periode: "2016 – 2017",
+    prestations: "Géotechnique, topographie, hydrologie, dimensionnement des ouvrages et EIES."
+  },
+  {
+    titre: "Études techniques et environnementales de 67 points d'eau pastoraux",
+    secteur: "hydraulique",
+    client: "PRAPS",
+    bailleur: "IDA / Banque mondiale",
+    lieu: "Six régions du Niger",
+    periode: "2023 – 2024",
+    prestations: "APS, APD, études géophysiques, topographie, modélisation EPANET, évaluation environnementale et dossier d'appel d'offres.",
+    phare: true
+  },
+  {
+    titre: "Assistance technique aux acteurs de l'eau, l'hygiène et l'assainissement",
+    secteur: "hydraulique",
+    client: "UNICEF",
+    bailleur: "UNICEF",
+    lieu: "Région de Diffa, Niger",
+    periode: "2018 – 2021",
+    prestations: "Diagnostic, supervision des travaux hydrauliques et d'assainissement, rapportage sectoriel."
+  },
+  {
+    titre: "Suivi et contrôle des travaux de 17 mini-AEP multi-villages",
+    secteur: "hydraulique",
+    client: "UNICEF",
+    bailleur: "UNICEF",
+    lieu: "Maradi et Zinder, Niger",
+    periode: "2020 – 2022",
+    prestations: "Contrôle des forages, des châteaux d'eau, des réservoirs et des bornes-fontaines."
+  },
+  {
+    titre: "Étude technique de la mini-AEP multi-villages de Kouna Daga",
+    secteur: "hydraulique",
+    client: "GIZ",
+    bailleur: "Coopération allemande",
+    lieu: "Commune de Tarka, Zinder, Niger",
+    periode: "2024",
+    prestations: "APS, APD, étude géophysique, topographie et dimensionnement du réseau."
+  },
+  {
+    titre: "Études de faisabilité technique, environnementale et sociale d'infrastructures hydrauliques",
+    secteur: "hydraulique",
+    client: "PARCA",
+    bailleur: "SDS Sahel-Niger",
+    lieu: "Tahoua et Tillabéri, Niger",
+    periode: "2019 – 2020",
+    prestations: "Topographie, dimensionnement des ouvrages hydrauliques et étude d'impact environnemental."
+  },
+  {
+    titre: "Contrôle et suivi de la construction de 17 marchés à bétail",
+    secteur: "batiment",
+    client: "MCA-Niger",
+    bailleur: "Millennium Challenge Corporation",
+    lieu: "Hamdallaye, Wankama, Tanda et Ouna, Niger",
+    periode: "2023 – 2024",
+    prestations: "Contrôle et suivi des travaux en groupement. Attestation de bonne fin délivrée.",
+    phare: true
+  },
+  {
+    titre: "Suivi et contrôle de la construction d'infrastructures scolaires — lot 3",
+    secteur: "batiment",
+    client: "Ministère de l'Éducation nationale",
+    bailleur: "Budget national",
+    lieu: "Région de Maradi, Niger",
+    periode: "2025 – en cours",
+    prestations: "Salles de classe, blocs de latrines et murs de clôture."
+  },
+  {
+    titre: "Étude et contrôle d'un marché et de salles de classe à Iférouane",
+    secteur: "batiment",
+    client: "PP2E / Commune rurale d'Iférouane",
+    bailleur: "KfW",
+    lieu: "Région d'Agadez, Niger",
+    periode: "2019 – 2020",
+    prestations: "APS, APD, dossier d'appel d'offres et suivi-contrôle. Attestation de bonne exécution délivrée."
+  },
+  {
+    titre: "Transformation de cases de santé en centres de santé intégrés de type 1",
+    secteur: "batiment",
+    client: "Communes de Tama, Dabaga et Dannet",
+    bailleur: "FICOD / KfW",
+    lieu: "Tahoua et Agadez, Niger",
+    periode: "2023 – en cours",
+    prestations: "Études techniques, électrification solaire, latrines et incinérateur, suivi et contrôle des travaux."
+  },
+  {
+    titre: "Études techniques et dossiers d'appel d'offres pour salles de classe et latrines scolaires",
+    secteur: "batiment",
+    client: "GIZ",
+    bailleur: "Coopération allemande",
+    lieu: "Niger",
+    periode: "2017 – 2018",
+    prestations: "Quatre blocs de deux salles de classe et dix blocs de latrines à deux cabines."
+  },
+  {
+    titre: "Études géotechniques des ouvrages de franchissement de la Pendjari et de la Mekrou",
+    secteur: "geotechnique",
+    client: "PNUD Burkina Faso",
+    bailleur: "PNUD",
+    lieu: "Complexe WAP, Burkina Faso",
+    periode: "2016",
+    prestations: "Études de fondation, recherche de carrières et essais de laboratoire."
+  }
+];
+
+const PARTENAIRES = [
+  { nom: "Banque mondiale", slug: "banque-mondiale" },
+  { nom: "UNICEF", slug: "unicef" },
+  { nom: "KfW", slug: "kfw" },
+  { nom: "FIDA", slug: "fida" },
+  { nom: "GIZ", slug: "giz" },
+  { nom: "MCA-Niger", slug: "mca-niger" },
+  { nom: "Banque islamique de développement", slug: "bid" },
+  { nom: "Banque africaine de développement", slug: "bad" },
+  { nom: "PNUD", slug: "pnud" },
+  { nom: "AMODER", slug: "amoder" },
+  { nom: "Ministère de l'Équipement", slug: "ministere-equipement" },
+  { nom: "Ministère de l'Éducation nationale", slug: "ministere-education" }
+];
+
+const ESSAIS = [
+  { famille: "Sols", designation: "Analyse granulométrique par tamisage et sédimentométrie", norme: "ASTM E11 · NF ISO 17892-4" },
+  { famille: "Sols", designation: "Limites d'Atterberg (liquidité, plasticité)", norme: "NF EN ISO 17892-12" },
+  { famille: "Granulats", designation: "Équivalent de sable et propreté des granulats", norme: "NF EN 933-8" },
+  { famille: "Béton", designation: "Confection, conservation et résistance à la compression", norme: "NF EN 12390-1/2/3 · NF P18-451" },
+  { famille: "Béton", designation: "Contrôle non destructif au scléromètre", norme: "—" },
+  { famille: "Chaussées", designation: "Portance CBR et essai Proctor", norme: "NF P94-093 · NF P94-078" },
+  { famille: "Fondations", designation: "Pénétration dynamique lourde et légère, carottier SPT", norme: "NF EN ISO 22476-2 · NF P94-116" },
+  { famille: "Bitumes", designation: "Bille-anneau et pénétrabilité à l'aiguille", norme: "NF EN 1427 · NF EN 1426" },
+  { famille: "Hydraulique", designation: "Perméabilité au perméamètre", norme: "—" },
+  { famille: "Géophysique", designation: "Sondages électriques et prospection de points d'eau", norme: "—" }
+];
+
+/* ==========================================================================
+   Comportements communs.
+   En PHP : includes/entete.php et includes/pied.php, même structure HTML.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fil d'actualité — contenu de démonstration, à valider par la direction.
+   Reproduit la future table `actualites`.
+   -------------------------------------------------------------------------- */
+const ACTUALITES = [
+  {
+    titre: "GéoConsulting primé meilleur bureau d'études du Niger",
+    categorie: "Distinction",
+    date: "2025-11-20",
+    image: "logo-mca-niger.png",
+    chapo: "Le bureau reçoit la distinction de meilleur bureau d'études du Niger lors des ArchiMat Awards 2025, en reconnaissance de son travail sur les infrastructures du pays."
+  },
+  {
+    titre: "Triple certification ISO renouvelée pour le système de management",
+    categorie: "Qualité",
+    date: "2026-03-10",
+    image: "certificat-14001.jpg",
+    chapo: "Les référentiels qualité, environnement et santé-sécurité au travail sont audités et reconduits, confirmant la conformité du système de management intégré."
+  },
+  {
+    titre: "Études techniques de 67 points d'eau pastoraux livrées",
+    categorie: "Projet",
+    date: "2024-04-15",
+    image: "materiau-laterite.jpg",
+    chapo: "Prospection géophysique, topographie et modélisation de réseau sur six régions, pour le compte du PRAPS sur financement de la Banque mondiale."
+  },
+  {
+    titre: "Le laboratoire étend son offre d'essais sur bitumes",
+    categorie: "Laboratoire",
+    date: "2026-01-28",
+    image: "equipement-presse-beton.jpg",
+    chapo: "Nouvel appareillage bille-anneau et pénétrabilité à l'aiguille : les contrôles de liants hydrocarbonés sont désormais réalisés en interne."
+  },
+  {
+    titre: "Chantier de la route de contournement du barrage de Kandadji",
+    categorie: "Chantier",
+    date: "2025-09-05",
+    image: "ouvrage-chateau-eau.jpg",
+    chapo: "Point d'avancement sur la supervision des 40,2 km de route bitumée et des deux ouvrages de franchissement, en groupement sous financement de la BID."
+  },
+  {
+    titre: "Campagne de reconnaissance géotechnique en région de Zinder",
+    categorie: "Terrain",
+    date: "2026-05-12",
+    image: "equipement-presse-cbr.jpg",
+    chapo: "Sondages, essais de pénétration dynamique et recherche de carrières de latérite en préalable aux études de pistes rurales."
+  }
+];
+
+/* --------------------------------------------------------------------------
+   Galerie — format : l (grand), m (moyen), s (petit)
+   -------------------------------------------------------------------------- */
+const GALERIE = [
+  { f: "ouvrage-chateau-eau.jpg", t: "Mise en place du château d'eau d'un poste d'eau autonome", format: "l" },
+  { f: "equipement-presse-cbr.jpg", t: "Presse CBR — mesure de la portance des sols", format: "m" },
+  { f: "materiau-laterite.jpg", t: "Gisement de latérite — recherche de matériaux d'emprunt", format: "s" },
+  { f: "labo-paillasse.jpg", t: "Paillasse du laboratoire — malaxeur, agitateur et balances", format: "s" },
+  { f: "equipement-presse-beton.jpg", t: "Presse de compression et éprouvettes de béton écrasées", format: "s" },
+  { f: "ouvrage-batiment-construction.jpg", t: "Bâtiment en cours de construction, suivi de chantier", format: "m" },
+  { f: "equipement-sclerometre.jpg", t: "Scléromètre dans son coffret — contrôle non destructif du béton", format: "s" },
+  { f: "equipement-bati-cbr.jpg", t: "Bâti d'essai avec anneau dynamométrique et comparateur", format: "m" },
+  { f: "equipement-etuve.jpg", t: "Étuve ventilée de séchage des échantillons", format: "s" },
+  { f: "equipement-malaxeur.jpg", t: "Malaxeur de laboratoire pour la préparation des éprouvettes", format: "s" },
+  { f: "equipement-equivalent-sable.jpg", t: "Agitateur pour essai d'équivalent de sable", format: "m" },
+  { f: "equipement-agitateur.jpg", t: "Agitateur mécanique de laboratoire", format: "s" },
+  { f: "equipement-balance.jpg", t: "Balance de précision et comparateur à cadran", format: "s" }
+];
+
+
+
+/* ==========================================================================
+   Comportements communs.
+   En PHP : includes/entete.php et includes/pied.php, même structure HTML.
+   ========================================================================== */
+
+const BASE = document.body.dataset.base || "";
+const PAGE = document.body.dataset.page || "";
+
+const CONTACT = {
+  adresse: "District de Tchangarey — BP 11725, Niamey, Niger",
+  tel1: "+227 90 53 53 23",
+  tel2: "+227 82 24 24 20",
+  whatsapp: "22782242426",
+  whatsappAffiche: "+227 82 24 24 26",
+  email: "contact@mygeoconsulting.com"
+};
+
+const MENU = [
+  { id: "accueil", url: "index.html", libelle: "Accueil" },
+  { id: "bureau", url: "le-bureau.html", libelle: "Le bureau" },
+  { id: "metiers", url: "nos-metiers.html", libelle: "Nos métiers" },
+  { id: "laboratoire", url: "laboratoire.html", libelle: "Laboratoire" },
+  { id: "references", url: "references.html", libelle: "Références" },
+  { id: "galerie", url: "galerie.html", libelle: "Galerie" },
+  { id: "actualites", url: "actualites.html", libelle: "Actualités" },
+  { id: "moyens", url: "moyens.html", libelle: "Moyens" },
+  { id: "carriere", url: "carriere.html", libelle: "Carrière" },
+  { id: "contact", url: "contact.html", libelle: "Contact" }
+];
+
+const ICONE_WA =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.13-1.47-.72-1.69-.8-.23-.09-.39-.13-.56.12-.16.25-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.21.89 2.39 1.01 2.55.12.17 1.74 2.66 4.22 3.73.59.25 1.05.4 1.41.52.59.19 1.13.16 1.56.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.11-.22-.17-.47-.29z"/></svg>';
+
+function lienWhatsApp(texte) {
+  const msg = texte || "Bonjour, je souhaite un renseignement sur vos prestations.";
+  return "https://wa.me/" + CONTACT.whatsapp + "?text=" + encodeURIComponent(msg);
+}
+
+/* ---------- en-tête ------------------------------------------------------- */
+function construireEntete() {
+  const cible = document.getElementById("entete");
+  if (!cible) return;
+
+  const liens = MENU.map(function (m) {
+    const actif = m.id === PAGE ? ' aria-current="page"' : "";
+    return '<a href="' + BASE + m.url + '"' + actif + ">" + m.libelle + "</a>";
+  }).join("");
+
+  cible.innerHTML =
+    '<div class="bandeau-haut"><div class="conteneur">' +
+      "<span>Certifié ISO 9001, ISO 14001 et ISO 45001</span>" +
+      '<a href="tel:' + CONTACT.tel1.replace(/\s/g, "") + '">' + CONTACT.tel1 + "</a>" +
+      '<a href="mailto:' + CONTACT.email + '">' + CONTACT.email + "</a>" +
+    "</div></div>" +
+    '<header class="entete"><div class="conteneur">' +
+      '<a class="marque" href="' + BASE + 'index.html">' +
+        '<img src="' + BASE + 'logo.png" alt="GéoConsulting, retour à l\'accueil">' +
+      "</a>" +
+      '<div class="entete-droite">' +
+        '<nav class="nav" id="nav-principal" aria-label="Navigation principale">' + liens + "</nav>" +
+        '<a class="bouton bouton--vert bouton--compact" href="' + BASE + 'devis.html">Demander un devis</a>' +
+        '<button class="burger" type="button" aria-expanded="false" aria-controls="nav-principal">Menu</button>' +
+      "</div>" +
+    "</div></header>";
+
+  const burger = cible.querySelector(".burger");
+  const nav = cible.querySelector(".nav");
+  burger.addEventListener("click", function () {
+    const ouvert = nav.classList.toggle("ouvert");
+    burger.setAttribute("aria-expanded", String(ouvert));
+  });
+}
+
+/* ---------- bouton WhatsApp flottant -------------------------------------- */
+function poserWhatsApp() {
+  if (document.querySelector(".whatsapp")) return;
+  const a = document.createElement("a");
+  a.className = "whatsapp";
+  a.href = lienWhatsApp();
+  a.target = "_blank";
+  a.rel = "noopener";
+  a.setAttribute("aria-label", "Nous écrire sur WhatsApp au " + CONTACT.whatsappAffiche);
+  a.innerHTML = ICONE_WA + '<span class="libelle">Écrire sur WhatsApp</span>';
+  document.body.appendChild(a);
+}
+
+/* ---------- pied de page -------------------------------------------------- */
+function construirePied() {
+  const cible = document.getElementById("pied");
+  if (!cible) return;
+
+  const liens = MENU.slice(1).map(function (m) {
+    return '<li><a href="' + BASE + m.url + '">' + m.libelle + "</a></li>";
+  }).join("");
+
+  cible.innerHTML =
+    '<footer class="pied"><div class="conteneur">' +
+      '<div class="colonnes colonnes--3">' +
+        "<div>" +
+          "<h4>GéoConsulting</h4>" +
+          "<p>Bureau d'études, de contrôle et laboratoire d'essais. Au service des infrastructures du Niger et de la sous-région depuis 2011.</p>" +
+          '<p><a class="bouton bouton--verre bouton--compact bouton--sans-fleche" href="' + lienWhatsApp() + '" target="_blank" rel="noopener">' + ICONE_WA + " WhatsApp</a></p>" +
+        "</div>" +
+        '<div><h4>Le site</h4><ul class="liste-nue">' + liens + "</ul></div>" +
+        '<div><h4>Nous joindre</h4><ul class="liste-nue">' +
+          "<li>" + CONTACT.adresse + "</li>" +
+          '<li><a href="tel:' + CONTACT.tel1.replace(/\s/g, "") + '">' + CONTACT.tel1 + "</a></li>" +
+          '<li><a href="tel:' + CONTACT.tel2.replace(/\s/g, "") + '">' + CONTACT.tel2 + "</a></li>" +
+          '<li>WhatsApp : <a href="' + lienWhatsApp() + '" target="_blank" rel="noopener">' + CONTACT.whatsappAffiche + "</a></li>" +
+          '<li><a href="mailto:' + CONTACT.email + '">' + CONTACT.email + "</a></li>" +
+        "</ul></div>" +
+      "</div>" +
+      '<div class="pied-bas">' +
+        "<span>© " + new Date().getFullYear() + " GéoConsulting. Tous droits réservés.</span>" +
+        "<span>Prototype — contenu à valider avant mise en ligne.</span>" +
+      "</div>" +
+    "</div></footer>";
+}
+
+/* ---------- références ---------------------------------------------------- */
+function nomSecteur(slug) {
+  const s = SECTEURS.find(function (x) { return x.slug === slug; });
+  return s ? s.nom : slug;
+}
+
+function ligneReference(r) {
+  return (
+    '<article class="ref" data-secteur="' + r.secteur + '">' +
+      "<div>" +
+        '<p class="secteur">' + nomSecteur(r.secteur) + "</p>" +
+        "<h3>" + r.titre + "</h3>" +
+        "<p>" + r.prestations + "</p>" +
+      "</div>" +
+      "<dl>" +
+        "<dt>Maître d'ouvrage</dt><dd>" + r.client + "</dd>" +
+        "<dt>Financement</dt><dd>" + r.bailleur + "</dd>" +
+        "<dt>Localisation</dt><dd>" + r.lieu + "</dd>" +
+        "<dt>Période</dt><dd>" + r.periode + "</dd>" +
+      "</dl>" +
+    "</article>"
+  );
+}
+
+function afficherReferences() {
+  const liste = document.getElementById("liste-references");
+  if (!liste) return;
+
+  const limite = parseInt(liste.dataset.limite || "0", 10);
+  const jeu = limite ? REFERENCES.filter(function (r) { return r.phare; }).slice(0, limite) : REFERENCES;
+  liste.innerHTML = jeu.map(ligneReference).join("");
+
+  const compteur = document.getElementById("compteur");
+  const filtres = document.getElementById("filtres");
+  if (compteur) compteur.textContent = jeu.length + " missions affichées";
+  if (!filtres) return;
+
+  filtres.innerHTML =
+    '<button class="filtre" type="button" aria-pressed="true" data-valeur="tout">Tous les secteurs</button>' +
+    SECTEURS.map(function (s) {
+      return '<button class="filtre" type="button" aria-pressed="false" data-valeur="' + s.slug + '">' + s.nom + "</button>";
+    }).join("");
+
+  filtres.addEventListener("click", function (e) {
+    const bouton = e.target.closest(".filtre");
+    if (!bouton) return;
+    filtres.querySelectorAll(".filtre").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b === bouton));
+    });
+    const valeur = bouton.dataset.valeur;
+    liste.querySelectorAll(".ref").forEach(function (article) {
+      article.classList.toggle("cache", !(valeur === "tout" || article.dataset.secteur === valeur));
+    });
+    const total = liste.querySelectorAll(".ref:not(.cache)").length;
+    if (compteur) compteur.textContent = total + (total > 1 ? " missions affichées" : " mission affichée");
+  });
+}
+
+/* ---------- actualités ---------------------------------------------------- */
+const MOIS = ["janvier", "février", "mars", "avril", "mai", "juin",
+  "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+
+function dateLisible(iso) {
+  const p = iso.split("-");
+  return Number(p[2]) + " " + MOIS[Number(p[1]) - 1] + " " + p[0];
+}
+
+function afficherActualites() {
+  const cible = document.getElementById("liste-actualites");
+  if (!cible || typeof ACTUALITES === "undefined") return;
+
+  const limite = parseInt(cible.dataset.limite || "0", 10);
+  const jeu = ACTUALITES.slice().sort(function (a, b) { return b.date.localeCompare(a.date); });
+  const rendu = limite ? jeu.slice(0, limite) : jeu;
+
+  cible.innerHTML = rendu.map(function (a) {
+    return '<article class="actu">' +
+      '<div class="actu-image"><img src="' + BASE + a.image + '" alt="" loading="lazy"></div>' +
+      '<div class="actu-corps">' +
+        '<div class="actu-meta"><span class="actu-cat">' + a.categorie + "</span>" +
+          '<span class="actu-date">' + dateLisible(a.date) + "</span></div>" +
+        "<h3>" + a.titre + "</h3>" +
+        "<p>" + a.chapo + "</p>" +
+      "</div></article>";
+  }).join("");
+}
+
+/* ---------- partenaires --------------------------------------------------- */
+function afficherPartenaires() {
+  const cible = document.getElementById("logos-partenaires");
+  if (!cible || typeof PARTENAIRES === "undefined") return;
+
+  const vignette = function (p) {
+    return '<figure data-nom="' + p.nom + '">' +
+      '<img src="' + BASE + "logo-" + p.slug + '.png" alt="' + p.nom + '" loading="lazy">' +
+      "</figure>";
+  };
+
+  // la piste est dupliquée pour que le défilement boucle sans saut
+  const piste = PARTENAIRES.map(vignette).join("");
+  cible.innerHTML = '<div class="ruban-piste">' + piste + piste + "</div>";
+
+  cible.querySelectorAll("img").forEach(function (img) {
+    img.addEventListener("error", function () {
+      const fig = img.parentNode;
+      fig.innerHTML = "<figcaption>" + fig.dataset.nom + "</figcaption>";
+    });
+  });
+}
+
+/* ---------- galerie et visionneuse ---------------------------------------- */
+const CLASSE_FORMAT = { l: "g-l", m: "g-m", s: "g-s" };
+
+function afficherGalerie() {
+  const cible = document.getElementById("galerie");
+  if (!cible || typeof GALERIE === "undefined") return;
+
+  const limite = parseInt(cible.dataset.limite || "0", 10);
+  const jeu = limite ? GALERIE.slice(0, limite) : GALERIE;
+
+  cible.innerHTML = jeu.map(function (g) {
+    return '<figure class="' + (CLASSE_FORMAT[g.format] || "g-s") + '" tabindex="0" role="button" ' +
+      'aria-label="Agrandir : ' + g.t + '" data-src="' + BASE + "" + g.f + '" data-titre="' + g.t + '">' +
+      '<img src="' + BASE + "" + g.f + '" alt="' + g.t + '" loading="lazy">' +
+      "<figcaption>" + g.t + "</figcaption></figure>";
+  }).join("");
+
+  const vue = document.createElement("div");
+  vue.className = "visionneuse";
+  vue.innerHTML = '<button type="button" aria-label="Fermer">&times;</button>' +
+    '<figure><img src="" alt=""><figcaption></figcaption></figure>';
+  document.body.appendChild(vue);
+
+  const ouvrir = function (fig) {
+    vue.querySelector("img").src = fig.dataset.src;
+    vue.querySelector("img").alt = fig.dataset.titre;
+    vue.querySelector("figcaption").textContent = fig.dataset.titre;
+    vue.classList.add("ouverte");
+  };
+  const fermer = function () { vue.classList.remove("ouverte"); };
+
+  cible.addEventListener("click", function (e) {
+    const fig = e.target.closest("figure");
+    if (fig) ouvrir(fig);
+  });
+  cible.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const fig = e.target.closest("figure");
+    if (!fig) return;
+    e.preventDefault();
+    ouvrir(fig);
+  });
+  vue.addEventListener("click", fermer);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") fermer(); });
+}
+
+/* ---------- formulaires --------------------------------------------------- */
+function gererChoix() {
+  document.querySelectorAll(".choix").forEach(function (groupe) {
+    const majuscule = function () {
+      groupe.querySelectorAll("label").forEach(function (l) {
+        const input = l.querySelector("input");
+        l.classList.toggle("actif", !!(input && input.checked));
+      });
+    };
+    groupe.addEventListener("change", majuscule);
+    majuscule();
+  });
+}
+
+function gererFormulaires() {
+  document.querySelectorAll("form[data-demo]").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const retour = form.querySelector(".retour");
+      if (retour) {
+        retour.textContent =
+          "Prototype : rien n'est envoyé pour l'instant. La version PHP enregistrera la demande et préviendra " +
+          CONTACT.email + ". Pour une réponse immédiate, écrivez-nous sur WhatsApp au " + CONTACT.whatsappAffiche + ".";
+      }
+    });
+  });
+}
+
+/* ---------- ambiance ------------------------------------------------------ */
+function animerAmbiance() {
+  const sobre = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const barre = document.createElement("div");
+  barre.className = "progression";
+  document.body.appendChild(barre);
+  const avancer = function () {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    barre.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + "%";
+  };
+  avancer();
+  window.addEventListener("scroll", avancer, { passive: true });
+
+  const entete = document.querySelector(".entete");
+  if (entete) {
+    const surveiller = function () { entete.classList.toggle("flotte", window.scrollY > 12); };
+    surveiller();
+    window.addEventListener("scroll", surveiller, { passive: true });
+  }
+
+  if (sobre || !("IntersectionObserver" in window)) return;
+
+  const cibles = document.querySelectorAll(
+    ".chapeau, .bento, .prestations, .duo, .mosaique, .galerie-grille, .ruban, .references, " +
+    ".certificats, .colonnes, .chiffres, .heros-iso, .actions, .defilant, .filtres, .actus, " +
+    ".mot-dg, .formulaire"
+  );
+  cibles.forEach(function (el) { el.classList.add("reveal"); });
+
+  const oeil = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("vu");
+      oeil.unobserve(e.target);
+    });
+  }, { threshold: 0.1, rootMargin: "0px 0px -60px 0px" });
+  cibles.forEach(function (el) { oeil.observe(el); });
+
+  const compteurs = document.querySelectorAll("[data-compte]");
+  const oeil2 = new IntersectionObserver(function (entrees) {
+    entrees.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const fin = parseInt(el.dataset.compte, 10);
+      const prefixe = el.dataset.prefixe || "";
+      const debut = performance.now();
+      const pas = function (t) {
+        const p = Math.min((t - debut) / 1500, 1);
+        el.textContent = prefixe + Math.round(fin * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(pas);
+      };
+      requestAnimationFrame(pas);
+      oeil2.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  compteurs.forEach(function (el) { oeil2.observe(el); });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  construireEntete();
+  construirePied();
+  poserWhatsApp();
+  afficherReferences();
+  afficherActualites();
+  afficherPartenaires();
+  afficherGalerie();
+  gererChoix();
+  gererFormulaires();
+  animerAmbiance();
+
+  const corps = document.getElementById("corps-essais");
+  if (corps && typeof ESSAIS !== "undefined") {
+    corps.innerHTML = ESSAIS.map(function (e) {
+      return "<tr><td>" + e.famille + "</td><td>" + e.designation + "</td><td>" + e.norme + "</td></tr>";
+    }).join("");
+  }
+});
+
+</script>
+</body>
+</html>
